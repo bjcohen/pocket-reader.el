@@ -177,7 +177,7 @@ item ID and second is the overlay used to mark it.")
 
 (defcustom pocket-reader-pop-to-url-default-function
   (lambda (url)
-    (funcall #'org-web-tools-read-url-as-org url :show-buffer-fn #'pop-to-buffer))
+    (funcall #'pocket-reader-open-url-default-function url :show-buffer-fn #'pop-to-buffer))
   "Default function to pop-to items."
   :type 'function)
 
