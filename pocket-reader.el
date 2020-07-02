@@ -734,8 +734,9 @@ of which is chosen as configured by
                                   ;; Don't use --get-url here, because, e.g. we don't want an "amp." to be shown in the list
                                   (pocket-reader--or-string-not-blank (ht-get it 'resolved_url)
                                                                       (ht-get it 'given_url))))
-                         (tags (pocket-reader--not-empty-string (s-join "," (ht-get it 'tags)))))
-                     (list id (vector added favorite title domain tags)))))
+                         (tags (pocket-reader--not-empty-string (s-join "," (ht-get it 'tags))))
+                         (wc (ht-get it 'word_count)))
+                     (list id (vector added favorite title domain tags wc)))))
 
 (defun pocket-reader--delete-items (&rest items)
   "Delete ITEMS.
@@ -821,7 +822,11 @@ action in the Pocket API."
                                         (list "*" 1 t)
                                         (list "Title" title-width t)
                                         (list "Site" domain-width t)
-                                        (list "Tags" 10 t)))))
+                                        (list "Tags" 10 t)
+                                        (list "WC" 5 (lambda (a b)
+                                                       (let ((a-wc (string-to-number (ht-get* pocket-reader-items (car a) 'word_count)))
+                                                             (b-wc (string-to-number (ht-get* pocket-reader-items (car b) 'word_count))))
+                                                         (< a-wc b-wc))))))))
 
 (defun pocket-reader--map-url-open-fn (url)
   "Return function to use to open URL.
