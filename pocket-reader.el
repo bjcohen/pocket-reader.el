@@ -815,7 +815,7 @@ action in the Pocket API."
   "Set `tabulated-list-format' according to the maximum width of items about to be displayed."
   (when-let ((domain-width (cl-loop for item being the hash-values of pocket-reader-items
                                     maximizing (length (ht-get item 'domain))))
-             (title-width (- (window-text-width) 11 2 domain-width 10 1)))
+             (title-width (- (window-text-width) 11 2 domain-width 1 11 5)))
     (when (> domain-width pocket-reader-site-column-max-width)
       (setq domain-width pocket-reader-site-column-max-width))
     (setq tabulated-list-format (vector (list "Added" 10 pocket-reader-added-column-sort-function)
