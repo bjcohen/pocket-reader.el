@@ -1198,7 +1198,7 @@ Returns list with these values:
                                  for col-data = (aref tabulated-list-format i)
                                  for col-width = (elt col-data 1)
                                  sum col-width)))
-         (column-width (elt col-data 1))
+         (column-width (1+ (elt col-data 1)))
          (end-col (+ start-col column-width)))
     (list col-num start-col end-col column-width)))
 
