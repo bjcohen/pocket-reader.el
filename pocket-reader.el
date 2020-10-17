@@ -654,8 +654,9 @@ one.  ITEM should be a hash-table with the appropriate keys, one
 of which is chosen as configured by
 `pocket-reader-url-priorities'."
   (let ((prioritized-url (cl-loop for key in pocket-reader-url-priorities
-                                  when (ht-get item key) ; Gets the URL
-                                  return it)))
+                                  for url = (ht-get item key) ; Gets the URL
+                                  when (s-present? url)
+                                  return url)))
     (if first
         prioritized-url
       (if-let ((domain (pocket-reader--url-domain prioritized-url))
@@ -1234,7 +1235,7 @@ eww, elfeed, and Org."
 (defun pocket-reader-org-add-link ()
   "Add link at point to Pocket in Org buffers."
   (interactive)
-  (when-let ((url (when (org-in-regexp org-bracket-link-regexp)
+  (when-let ((url (when (org-in-regexp org-bracket-link-regexp 1)
                     (org-link-unescape (match-string-no-properties 1)))))
     (when (pocket-lib-add-urls url)
       (message "Added: %s" url))))
